@@ -109,4 +109,8 @@ window.onload = function () {
   if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
   }
+};window.onload = function () {
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+  }
 };
