@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+
+<h1>Dashboard</h1>
+
+<p id="total"></p>
+<p id="abertos"></p>
+<p id="resolvidos"></p>
+
+<script src="api.js"></script>
+<script>
+  const chamados = getChamados();
+
+  document.getElementById("total").innerText = "Total: " + chamados.length;
+  document.getElementById("abertos").innerText =
+    "Abertos: " + chamados.filter(c => c.status === "aberto").length;
+  document.getElementById("resolvidos").innerText =
+    "Resolvidos: " + chamados.filter(c => c.status === "resolvido").length;
+</script>
+
+</body>
+</html>

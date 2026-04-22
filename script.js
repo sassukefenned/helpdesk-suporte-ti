@@ -1,3 +1,6 @@
+if (localStorage.getItem("logado") !== "true") {
+  window.location.href = "login.html";
+}
 const input = document.getElementById("chamadoInput");
 const lista = document.getElementById("listaChamados");
 
@@ -54,3 +57,19 @@ function removerChamado(index) {
 }
 
 renderizar();
+function filtrarChamados(filtro) {
+  const lista = document.getElementById("listaChamados");
+  lista.innerHTML = "";
+
+  let filtrados = chamados;
+
+  if (filtro !== "todos") {
+    filtrados = chamados.filter(c => c.status === filtro);
+  }
+
+  filtrados.forEach((chamado, index) => {
+    const li = document.createElement("li");
+    li.innerText = chamado.texto + " - " + chamado.status;
+    lista.appendChild(li);
+  });
+}
