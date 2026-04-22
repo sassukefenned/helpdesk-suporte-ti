@@ -73,3 +73,25 @@ function filtrarChamados(filtro) {
     lista.appendChild(li);
   });
 }
+function mostrarPagina(pagina) {
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById(pagina).classList.remove("hidden");
+
+  if (pagina === "dashboard") atualizarDashboard();
+}
+
+function atualizarDashboard() {
+  document.getElementById("total").innerText =
+    "Total: " + chamados.length;
+
+  document.getElementById("abertos").innerText =
+    "Abertos: " + chamados.filter(c => c.status === "aberto").length;
+
+  document.getElementById("resolvidos").innerText =
+    "Resolvidos: " + chamados.filter(c => c.status === "resolvido").length;
+}
+
+function logout() {
+  localStorage.removeItem("logado");
+  window.location.href = "login.html";
+}
