@@ -1,20 +1,56 @@
-function adicionarChamado() {
-  const input = document.getElementById("chamadoInput");
-  const texto = input.value;
+const input = document.getElementById("chamadoInput");
+const lista = document.getElementById("listaChamados");
 
-  if (texto === "") return;
+let chamados = JSON.parse(localStorage.getItem("chamados")) || [];
 
-  const li = document.createElement("li");
-  li.textContent = texto + " - Aberto";
-
-  li.onclick = function () {
-    if (li.textContent.includes("Aberto")) {
-      li.textContent = texto + " - Em andamento";
-    } else if (li.textContent.includes("Em andamento")) {
-      li.textContent = texto + " - Resolvido";
-    }
-  };
-
-  document.getElementById("listaChamados").appendChild(li);
-  input.value = "";
+function salvar() {
+  localStorage.setItem("chamados", JSON.stringify(chamados));
 }
+
+function renderizar() {
+  lista.innerHTML = "";
+
+  chamados.forEach((chamado, index) => {
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <span>${chamado.texto}</span>
+      <strong class="${chamado.status}">${chamado.status}</strong>
+      <button onclick="mudarStatus(${index})">Atualizar</button>
+      <button onclick="removerChamado(${index})">Remover</button>
+    `;
+
+    lista.appendChild(li);
+  });
+}
+
+function adicionarChamado() {
+  if (input.value === "") return;
+
+  chamados.push({
+    texto: input.value,
+    status: "aberto"
+  });
+
+  input.value = "";
+  salvar();
+  renderizar();
+}
+
+function mudarStatus(index) {
+  const statusAtual = chamados[index].status;
+
+  if (statusAtual === "aberto") chamados[index].status = "andamento";
+  else if (statusAtual === "andamento") chamados[index].status = "resolvido";
+
+  salvar();
+  renderizar();
+}
+
+function removerChamado(index) {
+  chamados.splice(index, 1);
+  salvar();
+  renderizar();
+}
+
+renderizar();
