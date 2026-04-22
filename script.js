@@ -1,116 +1,101 @@
-if (localStorage.getItem("logado") !== "true") {
-  window.location.href = "login.html";
-}
-const input = document.getElementById("chamadoInput");
-const lista = document.getElementById("listaChamados");
-
-let chamados = JSON.parse(localStorage.getItem("chamados")) || [];
-
-function salvar() {
-  localStorage.setItem("chamados", JSON.stringify(chamados));
+if (!window.location.pathname.includes("login.html")) {
+  if (localStorage.getItem("logado") !== "true") {
+    window.location.href = "login.html";
+  }
 }
 
-function renderizar() {
-  lista.innerHTML = "";
+document.addEventListener("DOMContentLoaded", () => {
 
-  chamados.forEach((chamado, index) => {
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      <span>${chamado.texto}</span>
-      <strong class="${chamado.status}">${chamado.status}</strong>
-      <button onclick="mudarStatus(${index})">Atualizar</button>
-      <button onclick="removerChamado(${index})">Remover</button>
-    `;
-
-    lista.appendChild(li);
-  });
-}
-
-function adicionarChamado() {
-  if (input.value === "") return;
-
-  chamados.push({
-    texto: input.value,
-    status: "aberto"
-  });
-
-  input.value = "";
-  salvar();
-  renderizar();
-}
-
-function mudarStatus(index) {
-  const statusAtual = chamados[index].status;
-
-  if (statusAtual === "aberto") chamados[index].status = "andamento";
-  else if (statusAtual === "andamento") chamados[index].status = "resolvido";
-
-  salvar();
-  renderizar();
-}
-
-function removerChamado(index) {
-  chamados.splice(index, 1);
-  salvar();
-  renderizar();
-}
-
-renderizar();
-function filtrarChamados(filtro) {
-  const lista = document.getElementById("listaChamados");
-  lista.innerHTML = "";
-
-  let filtrados = chamados;
-
-  if (filtro !== "todos") {
-    filtrados = chamados.filter(c => c.status === filtro);
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
   }
 
-  filtrados.forEach((chamado, index) => {
-    const li = document.createElement("li");
-    li.innerText = chamado.texto + " - " + chamado.status;
-    lista.appendChild(li);
-  });
-}
-function mostrarPagina(pagina) {
-  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
-  document.getElementById(pagina).classList.remove("hidden");
+  const input = document.getElementById("chamadoInput");
+  const lista = document.getElementById("listaChamados");
 
-  if (pagina === "dashboard") atualizarDashboard();
-}
+  let chamados = JSON.parse(localStorage.getItem("chamados")) || [];
 
-function atualizarDashboard() {
-  document.getElementById("total").innerText =
-    "Total: " + chamados.length;
+  function salvar() {
+    localStorage.setItem("chamados", JSON.stringify(chamados));
+  }
 
-  document.getElementById("abertos").innerText =
-    "Abertos: " + chamados.filter(c => c.status === "aberto").length;
+  function renderizar(listaFiltrada = chamados) {
+    if (!lista) return;
 
-  document.getElementById("resolvidos").innerText =
-    "Resolvidos: " + chamados.filter(c => c.status === "resolvido").length;
-}
+    lista.innerHTML = "";
 
-function logout() {
-  localStorage.removeItem("logado");
-  window.location.href = "login.html";
-}function toggleTheme() {
+    listaFiltrada.forEach((chamado, index) => {
+      const li = document.createElement("li");
+
+      li.innerHTML = `
+        ${chamado.texto} - <span class="${chamado.status}">${chamado.status}</span>
+        <button onclick="mudarStatus(${index})">Atualizar</button>
+        <button onclick="removerChamado(${index})">Remover</button>
+      `;
+
+      lista.appendChild(li);
+    });
+  }
+
+  window.adicionarChamado = function () {
+    if (!input || input.value === "") return;
+
+    chamados.push({ texto: input.value, status: "aberto" });
+
+    input.value = "";
+    salvar();
+    renderizar();
+  };
+
+  window.mudarStatus = function (index) {
+    const s = chamados[index].status;
+
+    if (s === "aberto") chamados[index].status = "andamento";
+    else if (s === "andamento") chamados[index].status = "resolvido";
+
+    salvar();
+    renderizar();
+  };
+
+  window.removerChamado = function (index) {
+    chamados.splice(index, 1);
+    salvar();
+    renderizar();
+  };
+
+  window.filtrarChamados = function (filtro) {
+    if (filtro === "todos") renderizar();
+    else renderizar(chamados.filter(c => c.status === filtro));
+  };
+
+  window.mostrarPagina = function (pagina) {
+    document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+    document.getElementById(pagina).classList.remove("hidden");
+
+    if (pagina === "dashboard") atualizarDashboard();
+  };
+
+  window.atualizarDashboard = function () {
+    document.getElementById("total").innerText = "Total: " + chamados.length;
+    document.getElementById("abertos").innerText =
+      "Abertos: " + chamados.filter(c => c.status === "aberto").length;
+    document.getElementById("resolvidos").innerText =
+      "Resolvidos: " + chamados.filter(c => c.status === "resolvido").length;
+  };
+
+  window.logout = function () {
+    localStorage.removeItem("logado");
+    window.location.href = "login.html";
+  };
+
+  renderizar();
+});
+
+function toggleTheme() {
   document.body.classList.toggle("dark");
 
-  if (document.body.classList.contains("dark")) {
-    localStorage.setItem("theme", "dark");
-  } else {
-    localStorage.setItem("theme", "light");
-  }
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("dark") ? "dark" : "light"
+  );
 }
-
-// Carregar tema salvo
-window.onload = function () {
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark");
-  }
-};window.onload = function () {
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark");
-  }
-};

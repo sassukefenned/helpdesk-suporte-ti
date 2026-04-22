@@ -19,7 +19,6 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
-  transition: 0.3s;
 }
 
 .container {
@@ -27,7 +26,6 @@ body {
   height: 100vh;
 }
 
-/* Sidebar */
 .sidebar {
   width: 240px;
   background: var(--sidebar);
@@ -35,21 +33,11 @@ body {
   padding: 20px;
 }
 
-.sidebar h2 {
-  font-weight: 600;
-}
-
 .sidebar li {
   padding: 10px;
-  border-radius: 8px;
   cursor: pointer;
 }
 
-.sidebar li:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-/* Main */
 .main {
   flex: 1;
   padding: 30px;
@@ -58,18 +46,8 @@ body {
 header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
-/* Botão tema */
-#themeBtn {
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-/* Cards */
 .cards {
   display: flex;
   gap: 20px;
@@ -78,49 +56,9 @@ header {
 .card {
   background: var(--card);
   padding: 20px;
-  border-radius: 12px;
-  flex: 1;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* Form */
-.form {
-  margin-bottom: 20px;
-}
-
-input, select {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-button {
-  padding: 10px;
-  border: none;
-  background: #3b82f6;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* Lista */
-li {
-  background: var(--card);
-  margin: 10px 0;
-  padding: 12px;
   border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
+  flex: 1;
 }
-
-/* Status */
-.aberto { color: #ef4444; }
-.andamento { color: #f59e0b; }
-.resolvido { color: #22c55e; }
-
-.hidden {
-  display: none;
-}/* LOGIN MODERNO */
 
 .login-container {
   display: flex;
@@ -132,22 +70,27 @@ li {
 .login-box {
   background: var(--card);
   padding: 40px;
-  border-radius: 12px;
+  border-radius: 10px;
   width: 300px;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
-.login-box h2 {
-  margin-bottom: 10px;
-}
-
-.login-box input {
-  width: 100%;
-  margin: 10px 0;
-}
-
-.login-box button {
-  width: 100%;
+input, button, select {
+  padding: 10px;
   margin-top: 10px;
+  width: 100%;
+}
+
+li {
+  background: var(--card);
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.aberto { color: red; }
+.andamento { color: orange; }
+.resolvido { color: green; }
+
+.hidden {
+  display: none;
 }
